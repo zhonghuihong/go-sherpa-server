@@ -69,9 +69,6 @@ jobs:
       - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      - name: Configure Git safe directory
-        run: git config --global --add safe.directory /src
-
       - name: Compile & compress in container
         run: |
           docker run --rm --platform=linux/${{ matrix.arch }} \
@@ -81,7 +78,7 @@ jobs:
               apt update && apt install -y pkg-config make gcc && \
               go mod tidy && \
               CGO_ENABLED=1 GOOS=linux GOARCH=${{ matrix.arch }} \
-                go build -v -ldflags '-s -w' \
+                go build -buildvcs=false  -v -ldflags '-s -w' \
                 -o ./linux-${{ matrix.arch }}-sherpa-server
             "
 
