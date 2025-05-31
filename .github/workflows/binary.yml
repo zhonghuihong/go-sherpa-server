@@ -43,7 +43,7 @@ jobs:
           go mod tidy
           go build -v \
             -ldflags "-s -w" \
-            -o ../windows-amd64-sherpa-server.exe
+            -o ./windows-amd64-sherpa-server.exe
 
       - name: Upload Windows binaries
         uses: actions/upload-artifact@v4
@@ -79,7 +79,7 @@ jobs:
               go mod tidy && \
               CGO_ENABLED=1 GOOS=linux GOARCH=${{ matrix.arch }} \
                 go build -v -ldflags '-s -w' \
-                -o ../linux-${{ matrix.arch }}-sherpa-server
+                -o ./linux-${{ matrix.arch }}-sherpa-server
             "
 
       - name: Upload Linux binaries
@@ -150,7 +150,7 @@ jobs:
 
       - name: Build Go binary for Android
         run: |
-          go mod tidy && go build -v -ldflags="-s -w" -o ../android-${{ matrix.arch }}-sherpa-server
+          go mod tidy && go build -v -ldflags="-s -w" -o ./android-${{ matrix.arch }}-sherpa-server
 
       - name: Upload Android binary
         uses: actions/upload-artifact@v4
