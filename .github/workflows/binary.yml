@@ -42,7 +42,7 @@ jobs:
         run: |
           go mod tidy
           go build -v \
-            -ldflags "-s -w -extldflags '-static'" \
+            -ldflags "-s -w" \
             -o ../windows-amd64-sherpa-server.exe
 
       - name: Upload Windows binaries
@@ -75,7 +75,7 @@ jobs:
             -v "${{ github.workspace }}:/src" \
             -w /src \
             golang:1.24.2 sh -c "\
-              apt install -y build-base autoconf automake libtool pkgconfig && \
+              apt install -y pkgconfig make gcc && \
               go mod tidy && \
               CGO_ENABLED=1 GOOS=linux GOARCH=${{ matrix.arch }} \
                 go build -v -ldflags '-s -w' \
@@ -150,7 +150,7 @@ jobs:
 
       - name: Build Go binary for Android
         run: |
-          go build -v -ldflags="-s -w" -o ../android-${{ matrix.arch }}-sherpa-server
+          go mod tidy && go build -v -ldflags="-s -w" -o ../android-${{ matrix.arch }}-sherpa-server
 
       - name: Upload Android binary
         uses: actions/upload-artifact@v4
