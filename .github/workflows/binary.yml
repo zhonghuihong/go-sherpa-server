@@ -41,7 +41,6 @@ jobs:
       - name: Build & compress Windows binaries
         run: |
           go mod tidy
-          cd src
           go build -v \
             -ldflags "-s -w -extldflags '-static'" \
             -o ../windows-amd64-sherpa-server.exe
@@ -76,7 +75,7 @@ jobs:
             -v "${{ github.workspace }}:/src" \
             -w /src \
             golang:1.24.2 sh -c "\
-              apk add --no-cache build-base autoconf automake libtool pkgconfig && \
+              apt install -y build-base autoconf automake libtool pkgconfig && \
               go mod tidy && \
               CGO_ENABLED=1 GOOS=linux GOARCH=${{ matrix.arch }} \
                 go build -v -ldflags '-s -w' \
@@ -151,7 +150,7 @@ jobs:
 
       - name: Build Go binary for Android
         run: |
-          cd src && go build -v -ldflags="-s -w" -o ../android-${{ matrix.arch }}-sherpa-server
+          go build -v -ldflags="-s -w" -o ../android-${{ matrix.arch }}-sherpa-server
 
       - name: Upload Android binary
         uses: actions/upload-artifact@v4
