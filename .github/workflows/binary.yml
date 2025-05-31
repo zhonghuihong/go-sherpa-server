@@ -75,7 +75,7 @@ jobs:
             -v "${{ github.workspace }}:/src" \
             -w /src \
             golang:1.24.2 sh -c "\
-              apt update && apt install -y pkgconfig make gcc && \
+              apt update && apt install -y pkg-config make gcc && \
               go mod tidy && \
               CGO_ENABLED=1 GOOS=linux GOARCH=${{ matrix.arch }} \
                 go build -v -ldflags '-s -w' \
