@@ -37,14 +37,18 @@ func handleWebSocket(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	connectionAlive := true
-	defer conn.Close()
-	defer func() {
-		connectionAlive = false
-	}()
 	log.Printf("新的WebSocket连接建立")
 
 	vad := sherpa.NewVoiceActivityDetector(&vadConfig, config.ASR.VAD.BufferSizeInSeconds)
-	defer sherpa.DeleteVoiceActivityDetector(vad)
+
+	quitChan := make(chan struct{}, 1)
+	defer func() {
+		connectionAlive = false
+		<-quitChan
+		sherpa.DeleteVoiceActivityDetector(vad)
+		conn.Close()
+		log.Println("连接关闭")
+	}()
 
 	go func() {
 		defer func() {
@@ -54,6 +58,7 @@ func handleWebSocket(w http.ResponseWriter, r *http.Request) {
 		}()
 		for {
 			if !connectionAlive {
+				quitChan <- struct{}{}
 				break
 			}
 			for !vad.IsEmpty() {
