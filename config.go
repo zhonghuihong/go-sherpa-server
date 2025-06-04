@@ -7,8 +7,10 @@ import (
 
 // Config 总配置结构
 type Config struct {
-	Server ServerConfig `yaml:"server"`
-	ASR    ASRConfig    `yaml:"asr"`
+	Server   ServerConfig `yaml:"server"`
+	ASR      ASRConfig    `yaml:"asr"`
+	TTS      TTSConfig    `yaml:"tts"`
+	Provider string       `yaml:"provider"`
 }
 
 // ServerConfig 服务器配置
@@ -20,6 +22,11 @@ type ServerConfig struct {
 // ASRConfig ASR相关配置
 type ASRConfig struct {
 	VAD VADConfig `yaml:"vad"`
+}
+
+type TTSConfig struct {
+	SID   int     `yaml:"sid"`
+	Speed float32 `yaml:"speed"`
 }
 
 // VADConfig VAD配置

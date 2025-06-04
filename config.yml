@@ -1,6 +1,7 @@
 server:
   ip: 0.0.0.0
   port: 8848
+provider: "coreml"
 asr:
   vad:
     threshold: 0.2
@@ -9,3 +10,7 @@ asr:
     windowSize: 512
     maxSpeechDuration: 15
     bufferSizeInSeconds: 30
+
+tts:
+  sid: 0
+  speed: 1.0
